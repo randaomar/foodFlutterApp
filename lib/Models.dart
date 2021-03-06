@@ -13,13 +13,13 @@ class Recipe{
   factory Recipe.fromJson(Map<String, dynamic> json){
     List<Ingredients> ingredients =   List<Ingredients>.from(json["extendedIngredients"].map((x) => Ingredients.fromJson(x)));
 
- return Recipe(  id :json['id'],
-   title : json['title'],
-   image : json['image'],
-   servings :json['servings'],
-   readyInMinutes: json['readyInMinutes'],
-   extendedIngredients: ingredients,
-   summary : json['summary']);
+    return Recipe(  id :json['id'],
+        title : json['title'],
+        image : json['image'],
+        servings :json['servings'],
+        readyInMinutes: json['readyInMinutes'],
+        extendedIngredients: ingredients,
+        summary : json['summary']);
 
   }
 
@@ -40,9 +40,9 @@ class RecipesResponse {
   RecipesResponse(this.recipes);
 
   factory RecipesResponse.fromJson(Map<String, dynamic>json) {
-   // var list = json['recipes'] as List;
+    // var list = json['recipes'] as List;
     List<Recipe> recipeList =  new List<Recipe>.from(json["recipes"].map((x) => Recipe.fromJson(x)));
 
-   return RecipesResponse(recipeList);
+    return RecipesResponse(recipeList);
   }
 }
