@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodflutterapp/FoodBloc.dart';
+import 'package:foodflutterapp/FoodCubit.dart';
 import 'package:foodflutterapp/FoodState.dart';
 import 'package:flutter/material.dart';
 
 
-abstract class FoodWidget<B extends FoodBloc> extends StatelessWidget {
+abstract class FoodWidget<B extends FoodCubit> extends StatelessWidget {
    Widget buildFoodWidget(buildContext);
   @override
   Widget build(BuildContext context) {

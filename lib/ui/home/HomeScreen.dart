@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodflutterapp/ui/FoodWidget.dart';
 
-import '../../FoodEvent.dart';
 import '../../FoodState.dart';
 import '../../Models.dart';
 import '../../Utils.dart';
-import 'bloc/HomeFoodBloc.dart';
+import 'cubit/HomeFoodCubit.dart';
 
-class HomeScreen extends FoodWidget<HomeFoodBloc> {
+class HomeScreen extends FoodWidget<HomeFoodCubit> {
 
   @override
   Widget buildFoodWidget(context) {
-    final _bloc = BlocProvider.of<HomeFoodBloc>(context);
+    final _bloc = BlocProvider.of<HomeFoodCubit>(context);
     return Scaffold(
       appBar: AppBar(title: Text(_bloc.getTitle()),),
       body: SafeArea(
-        child: BlocListener<HomeFoodBloc, FoodState>(
+        child: BlocListener<HomeFoodCubit, FoodState>(
           listener: (context, state) {
             print("HERE WE GO!");
             if (state is LoadingState) {
@@ -42,23 +41,22 @@ class HomeScreen extends FoodWidget<HomeFoodBloc> {
                 SizedBox(height: 20,),
                 Container(
                     height: 170,
-                    child:BlocBuilder<HomeFoodBloc, FoodState>(
+                    child:BlocBuilder<HomeFoodCubit, FoodState>(
                       buildWhen: (FoodState previousState, FoodState currentState) => currentState is RecipeListState,
                       builder: (context, state) {
                         if(state is InitFoodState){
-                          _bloc.add(GetHomeListFoodEvent());
+                          _bloc.getRecipes();
                         }
-                        return state is RecipeListState
-                            ? getHorizontalListView(
-                            true, (state).recipeList.reversed.toList())
-                            : Container();
+                        if(state is RecipeListState)
+                          return getHorizontalListView(true, (state).recipeList.reversed.toList());
+                        else return Container();
                       } ,
                     )
                 ),
                 SizedBox(height: 5,),
                 Text("Popular Recipies:", style: TextStyle(fontSize: 20, color: Colors.grey[800], fontWeight: FontWeight.bold)),
                 SizedBox(height: 15,),
-                Expanded(child:BlocBuilder<HomeFoodBloc, FoodState>(
+                Expanded(child:BlocBuilder<HomeFoodCubit, FoodState>(
                   buildWhen: (FoodState previousState, FoodState currentState) => currentState is RecipeListState,
                   builder: (context, state) => state is RecipeListState? getHorizontalListView(false, (state).recipeList):Container()
                   ,

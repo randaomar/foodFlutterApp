@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:foodflutterapp/FoodEvent.dart';
 import 'package:foodflutterapp/FoodState.dart';
 
 import 'Utils.dart';
 
- abstract class FoodBloc extends Bloc<FoodEvent, FoodState> {
+ abstract class FoodCubit extends Cubit<FoodState> {
  Stream _refreshStream = refreshDataStreamController.stream;
  Stream _expireSessionStream = sessionExpiredStreamController.stream;
  StreamSubscription<void> _refreshStreamSubscription;
  StreamSubscription<void> _expireSessionStreamSubscription;
-  FoodBloc(FoodState initialState) : super(initialState){
+  FoodCubit(FoodState initialState) : super(initialState){
    _refreshStreamSubscription = _refreshStream.listen((event) {
      refreshData();
    });
@@ -25,7 +24,7 @@ import 'Utils.dart';
  void refreshData();
 
   @override
-  Future<Function> close() {
+  Future<void> close() {
     _refreshStreamSubscription.cancel();
     _expireSessionStreamSubscription.cancel();
     return super.close();
